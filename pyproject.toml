@@ -1,0 +1,22 @@
+[project]
+name = "Wysebee"
+version = "0.0.1"
+authors = [
+  { name="Jeff Xu", email="zxu@wysebee.com" },
+]
+description = "A simple cross-platform framework for your AI project."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/wysebee/wysebee"
+Issues = "https://github.com/wysebee/wysebee/issues"
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
