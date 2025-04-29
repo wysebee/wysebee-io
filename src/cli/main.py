@@ -28,8 +28,17 @@ def init(name: str):
 
   # Create main.py file with main() function
   main_file = src_dir / "main.py"
-  main_file.write_text('''def main():
-    print("Hello from Wysebee App!")
+  main_file.write_text('''
+from wysebee import Wysebee
+
+def main():
+    app = QApplication(sys.argv)
+    wysebee = Wysebee(app)
+    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "ui/templates/index.html"))
+    browser.load(QUrl.fromLocalFile(html_path))
+    browser.show()
+
+    sys.exit(app.exec())
 
 if __name__ == "__main__":
     main()
@@ -87,7 +96,8 @@ export default defineConfig({
   },
 })
 ''')
-
+    subprocess.run(["npm", "install"], check=True)
+    subprocess.run(["npm", "run", "build"], check=True)
     os.chdir(original_dir)
     print(Fore.GREEN + f"Successfully set up Vite in {name}/ui!")
   except subprocess.CalledProcessError as e:
