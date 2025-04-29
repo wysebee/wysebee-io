@@ -1,6 +1,9 @@
 import typer
 from colorama import init as colorama_init, Fore
-from pathlib import Path 
+from pathlib import Path
+import subprocess
+import os
+import re
 
 colorama_init(autoreset=True)
 app = typer.Typer()
@@ -32,6 +35,67 @@ if __name__ == "__main__":
     main()
 ''')
   print(Fore.BLUE + f"Created main.py file in {name}/src")
+
+  # Change to UI directory and initialize vite
+  try:
+    print(Fore.YELLOW + f"Setting up Vite in UI folder...")
+    original_dir = os.getcwd()
+    os.chdir(ui_dir)
+    subprocess.run(["npm", "create", "vite@latest", "."], check=True)
+    
+    # Modify vite.config.js to add custom configuration
+    vite_config_path = Path("vite.config.js")
+    if vite_config_path.exists():
+      print(Fore.YELLOW + f"Updating vite.config.js with custom settings...")
+      
+      # Read the current content
+      config_content = vite_config_path.read_text()
+      
+      # Find the defineConfig object
+      if "defineConfig" in config_content and "{" in config_content:
+        # Insert our custom config before the closing bracket of defineConfig
+        # Find the last closing bracket
+        if re.search(r'defineConfig\s*\(\s*{', config_content):
+          # Replace the closing parenthesis with our config options plus a closing parenthesis
+          modified_content = re.sub(
+            r'(\s*}\s*\))(?!\s*[,;])',
+            r'''
+  base: './',
+  build: {
+    outDir: 'templates',
+  },
+\1''',
+            config_content,
+            count=1
+          )
+          
+          # Write the modified content back
+          vite_config_path.write_text(modified_content)
+          print(Fore.BLUE + f"Updated vite.config.js with custom configuration")
+    else:
+      print(Fore.YELLOW + f"vite.config.js not found, creating it")
+      # Create a new vite.config.js file
+      vite_config_path.write_text('''import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  base: './',
+  build: {
+    outDir: 'templates',
+  },
+})
+''')
+
+    os.chdir(original_dir)
+    print(Fore.GREEN + f"Successfully set up Vite in {name}/ui!")
+  except subprocess.CalledProcessError as e:
+    print(Fore.RED + f"Error running npm create vite: {e}")
+    os.chdir(original_dir)
+  except Exception as e:
+    print(Fore.RED + f"Unexpected error: {e}")
+    os.chdir(original_dir)
 
 
 @app.command()
