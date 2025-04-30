@@ -13,6 +13,13 @@ classifiers = [
 ]
 license = "MIT"
 
+dependencies = [
+    "pyside6>=6.9.0",
+    "Jinja2>=3.1.2",
+    "typer>=0.15.2",
+    "colorama>=0.4.6",
+]
+
 [project.urls]
 Homepage = "https://github.com/wysebee/wysebee"
 Issues = "https://github.com/wysebee/wysebee/issues"
@@ -20,3 +27,6 @@ Issues = "https://github.com/wysebee/wysebee/issues"
 [build-system]
 requires = ["flit_core<4"]
 build-backend = "flit_core.buildapi"
+
+[project.scripts]
+wb = "Wysebee.cli.main:app"

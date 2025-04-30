@@ -12,7 +12,7 @@ app = typer.Typer()
 
 @app.command()
 def init(name: str):
-  print(Fore.GREEN + f"Creating app {name}")
+  print(Fore.YELLOW + f"Creating app {name}")
   # Create the main app directory
   app_dir = Path(name)
   app_dir.mkdir(parents=True, exist_ok=True)
@@ -20,12 +20,12 @@ def init(name: str):
   # Create the src subfolder
   src_dir = app_dir / "src"
   src_dir.mkdir(exist_ok=True)
-  print(Fore.BLUE + f"Created src folder in {name}")
+  print(Fore.YELLOW + f"Created src folder in {name}")
 
   # Create the ui subfolder
   ui_dir = app_dir / "ui"
   ui_dir.mkdir(exist_ok=True)
-  print(Fore.BLUE + f"Created ui folder in {name}")
+  print(Fore.YELLOW + f"Created ui folder in {name}")
 
   # Create main.py file with main() function
   main_file = app_dir / "main.py"
@@ -52,7 +52,7 @@ def main():
 if __name__ == "__main__":
     main()
 ''')
-  print(Fore.BLUE + f"Created main.py file in {name}/src")
+  print(Fore.YELLOW + f"Created main.py file in {name}/src")
 
   requirements_file = app_dir / "requirements.txt"
   requirements_file.write_text('''
@@ -95,7 +95,7 @@ Wysebee
           
           # Write the modified content back
           vite_config_path.write_text(modified_content)
-          print(Fore.BLUE + f"Updated vite.config.js with custom configuration")
+          print(Fore.YELLOW + f"Updated vite.config.js with custom configuration")
     else:
       print(Fore.YELLOW + f"vite.config.js not found, creating it")
       # Create a new vite.config.js file
@@ -162,14 +162,17 @@ export default defineConfig({
     subprocess.run(["npm", "install"], check=True)
     subprocess.run(["npm", "run", "build"], check=True)
     os.chdir(original_dir)
-    print(Fore.GREEN + f"Successfully set up Vite in {name}/ui!")
+    print(Fore.YELLOW + f"Successfully set up Vite in {name}/ui!")
+    print(Fore.GREEN + f"Now you are ready!")
+    print(Fore.GREEN + f" To run the app, use:")
+    print(Fore.GREEN + f"   cd {name}")
+    print(Fore.GREEN + f"   python main.py")
   except subprocess.CalledProcessError as e:
     print(Fore.RED + f"Error running npm create vite: {e}")
     os.chdir(original_dir)
   except Exception as e:
     print(Fore.RED + f"Unexpected error: {e}")
     os.chdir(original_dir)
-
 
 @app.command()
 def dev():
