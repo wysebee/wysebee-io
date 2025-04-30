@@ -113,9 +113,32 @@ export default defineConfig({
 def dev():
   typer.echo(f"Running app in dev mode!")
 
+def build_ui():
+  original_dir = os.getcwd()
+  app_dir = Path(original_dir)
+  app_name = app_dir.name
+  print(Fore.GREEN + f"Building UI for {app_name}!")
+
+  ui_dir = app_dir / "ui"
+  if ui_dir.exists():
+    os.chdir(ui_dir)
+    try:
+      subprocess.run(["npm", "run", "build"], check=True)
+      print(Fore.GREEN + f"Successfully built UI for {app_name}!")
+    except subprocess.CalledProcessError as e:
+      print(Fore.RED + f"Error building UI: {e}")
+    finally:
+      os.chdir(original_dir)
+  else:
+    print(Fore.RED + f"UI directory not found at {ui_dir}. Make sure you're in the correct project directory.")
+
 @app.command()
-def build():
-  typer.echo(f"Building app!")
+def build(ui: bool = typer.Option(False, "--ui", help="Only build the UI portion")):
+  if ui:
+    build_ui()
+  else:
+    typer.echo(f"Building app!")
+    # Add full build logic here
 
 if __name__ == "__main__":
   app()
