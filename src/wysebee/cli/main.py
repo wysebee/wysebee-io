@@ -4,6 +4,7 @@ from pathlib import Path
 import subprocess
 import os
 import re
+import shutil
 
 colorama_init(autoreset=True)
 app = typer.Typer()
@@ -27,9 +28,16 @@ def init(name: str):
   print(Fore.BLUE + f"Created ui folder in {name}")
 
   # Create main.py file with main() function
-  main_file = src_dir / "main.py"
+  main_file = app_dir / "main.py"
   main_file.write_text('''
-from wysebee import Wysebee
+import sys
+import os
+import logging
+from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import QObject, Slot, Signal, QUrl
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEnginePage
+from Wysebee import Wysebee
 
 def main():
     app = QApplication(sys.argv)
@@ -46,12 +54,18 @@ if __name__ == "__main__":
 ''')
   print(Fore.BLUE + f"Created main.py file in {name}/src")
 
+  requirements_file = app_dir / "requirements.txt"
+  requirements_file.write_text('''
+PySide6
+Wysebee
+''')
+
   # Change to UI directory and initialize vite
   try:
     print(Fore.YELLOW + f"Setting up Vite in UI folder...")
     original_dir = os.getcwd()
     os.chdir(ui_dir)
-    subprocess.run(["npm", "create", "vite@latest", "."], check=True)
+    subprocess.run(["npm", "create", "vite@latest", ".", "--", "--template", "react"], check=True)
     
     # Modify vite.config.js to add custom configuration
     vite_config_path = Path("vite.config.js")
@@ -97,6 +111,54 @@ export default defineConfig({
   },
 })
 ''')
+
+    index_html_path = Path("index.html")
+    index_html_path.write_text('''
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React</title>
+    <script type="text/javascript" src="qwebchannel.js"></script>
+    <script type="text/javascript">
+      console.log("Initializing QWebSocket...");
+      let baseUrl = "ws://localhost:12345";
+
+      console.log("Connecting to WebSocket server at " + baseUrl + ".");
+      let socket = new WebSocket(baseUrl);
+
+      socket.onclose = function () {
+        console.error("web socket closed");
+      };
+      socket.onerror = function (error) {
+        console.error("web socket error: " + error);
+      };
+      socket.onopen = function () {
+        console.log("WebSocket connected, setting up QWebChannel.");
+        new QWebChannel(socket, function (channel) {
+          console.log("✅ QWebChannel initialized");
+          channel.objects.wysebee.sendMessage("Hello from the frontend!");
+          window.wysebee = channel.objects.wysebee;
+          console.log("wysebee object:", window.wysebee);
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+''')
+
+    assets_dir = os.path.join(os.path.dirname(__file__), '../assets')
+    shutil.copyfile(
+      os.path.join(assets_dir, 'qwebchannel.js'),
+      './public/qwebchannel.js'
+    )
+
     subprocess.run(["npm", "install"], check=True)
     subprocess.run(["npm", "run", "build"], check=True)
     os.chdir(original_dir)

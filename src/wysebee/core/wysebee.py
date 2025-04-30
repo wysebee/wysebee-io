@@ -9,8 +9,29 @@ from .wysebee_webengine_page import WysebeeWebEnginePage
 from .wysebee_backend import WysebeeBackend
 from .websocket_client_wrapper import WebSocketClientWrapper
 
-logger = logging.getLogger("wysebee")
+def setup_logging():
+    logger = logging.getLogger('wysebee')
+    logger.setLevel(logging.DEBUG)
 
+    # Console handler
+    c_handler = logging.StreamHandler()
+    c_handler.setLevel(logging.DEBUG)
+
+    # File handler
+    f_handler = logging.FileHandler('gallery.log')
+    f_handler.setLevel(logging.DEBUG)
+
+    # Formatter
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    c_handler.setFormatter(formatter)
+    f_handler.setFormatter(formatter)
+
+    # Add handlers (only if not already added)
+    if not logger.handlers:
+        logger.addHandler(c_handler)
+        logger.addHandler(f_handler)
+
+setup_logging()
 class Wysebee(QObject):
     def __init__(self, app):
       super().__init__()
