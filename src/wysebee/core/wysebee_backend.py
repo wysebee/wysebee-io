@@ -1,11 +1,13 @@
 import os
 import json
 import logging
-from PySide6.QtCore import QObject, Slot
+from PySide6.QtCore import QObject, Slot, Signal
 
 logger = logging.getLogger("wysebee")
 
 class WysebeeBackend(QObject):
+
+    sendFile = Signal(str, int)
 
     def __init__(self, parent):
         super().__init__(parent)
