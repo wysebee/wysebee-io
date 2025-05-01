@@ -1,7 +1,7 @@
 import requests
 import json
 from requests.exceptions import HTTPError
-from Wysebee.core.singleton import singleton
+from Wysebee import singleton
 
 def raise_detailed_error(request_object):
     try:
