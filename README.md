@@ -16,8 +16,16 @@ pip install wysebee
 
 ## Usage
 
+### Create your first app
+
 ```bash
 wb init test_app
 cd test_app
 python main.py
+```
+
+### Build only ui
+
+```bash
+wb build --ui
 ```
