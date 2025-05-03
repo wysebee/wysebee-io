@@ -1,5 +1,6 @@
 import logging
-from PySide6.QtCore import QObject, Slot
+import os
+from PySide6.QtCore import QObject, Slot, QUrl
 from PySide6.QtWebSockets import QWebSocketServer
 from PySide6.QtNetwork import QHostAddress, QSslSocket
 from PySide6.QtWebChannel import QWebChannel
@@ -32,6 +33,8 @@ def setup_logging():
         logger.addHandler(f_handler)
 
 setup_logging()
+
+logger = logging.getLogger("wysebee")
 class Wysebee(QObject):
     def __init__(self, app):
       super().__init__()
@@ -51,7 +54,7 @@ class Wysebee(QObject):
       self._channel = QWebChannel(self._browser)
       self._backend = None
 
-    def initialize_browser(self, width = None, height = None, backend = None):
+    def initialize_window(self, width = None, height = None, backend = None):
         if backend is None:
             backend = WysebeeBackend(self._app)
         self._backend = backend
@@ -66,6 +69,10 @@ class Wysebee(QObject):
         if width is not None and height is not None:
           self._browser.resize(width, height)
         return self._browser
+
+    def launch(self, url: str):
+        self._browser.load(QUrl.fromLocalFile(url))
+        self._browser.show()
 
     @Slot(bool)
     def pageLoaded(self, result):

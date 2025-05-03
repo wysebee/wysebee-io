@@ -42,10 +42,9 @@ from Wysebee import Wysebee
 def main():
     app = QApplication(sys.argv)
     wysebee = Wysebee(app)
-    browser = wysebee.initialize_browser(width=1280, height=800)
+    wysebee.initialize_browser(width=1280, height=800)
     html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "ui/templates/index.html"))
-    browser.load(QUrl.fromLocalFile(html_path))
-    browser.show()
+    wysebee.launch(html_path)
 
     sys.exit(app.exec())
 

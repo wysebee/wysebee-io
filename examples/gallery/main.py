@@ -67,7 +67,7 @@ def main():
     app.setApplicationName("Gallery")
     wysebee = Wysebee(app)
     backend = Backend(app)
-    browser = wysebee.initialize_browser(width=1280, height=800, backend=backend)
+    wysebee.initialize_window(width=1280, height=800, backend=backend)
     html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "ui/templates/index.html"))
 
     '''
@@ -79,8 +79,7 @@ def main():
     devtools_view.show()  # Comment this out if you want to open DevTools later
     '''
 
-    browser.load(QUrl.fromLocalFile(html_path))
-    browser.show()
+    wysebee.launch(html_path)
 
     sys.exit(app.exec())
 

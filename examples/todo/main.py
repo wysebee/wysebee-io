@@ -29,10 +29,8 @@ def main():
     app.setApplicationName("Todo")
     wysebee = Wysebee(app)
     backend = Backend(app)
-    browser = wysebee.initialize_browser(width=1280, height=800, backend=backend)
-    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "ui/templates/index.html"))
-    browser.load(QUrl.fromLocalFile(html_path))
-    browser.show()
+    wysebee.initialize_window(width=1280, height=800, backend=backend)
+    wysebee.launch(os.path.abspath(os.path.join(os.path.dirname(__file__), "ui/templates/index.html")))
 
     sys.exit(app.exec())
 
