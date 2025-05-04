@@ -12,7 +12,11 @@ app = typer.Typer()
 
 
 @app.command()
-def init(name: str):
+def init(name: str, template: str = typer.Option(None, "--template", help="Template to use, e.g. react, react-ts")):
+    if template:
+        typer.echo(f"Using template: {template}")
+    else:
+        typer.echo("No template provided")
     print(Fore.YELLOW + f"Creating app {name}")
     # Create the main app directory
     app_dir = Path(name)
@@ -69,10 +73,16 @@ Wysebee
         print(Fore.YELLOW + f"Setting up Vite in UI folder...")
         original_dir = os.getcwd()
         os.chdir(ui_dir)
-        subprocess.run(
-            ["npm", "create", "vite@latest", ".", "--", "--template", "react"],
-            check=True,
-        )
+        if template:
+            subprocess.run(
+                ["npm", "create", "vite@latest", ".", "--", "--template", template],
+                check=True,
+            )
+        else:
+            subprocess.run(
+                ["npm", "create", "vite@latest", ".",],
+                check=True,
+            )
 
         # Modify vite.config.js to add custom configuration
         vite_config_path = Path("vite.config.js")
@@ -178,7 +188,8 @@ export default defineConfig({
         print(Fore.YELLOW + f"Successfully set up Vite in {name}/ui!")
         print(Fore.GREEN + f"Now you are ready!")
         print(Fore.GREEN + f" To run the app, use:")
-        print(Fore.GREEN + f"   cd {name}")
+        if name != ".":
+            print(Fore.GREEN + f"   cd {name}")
         print(Fore.GREEN + f"   python main.py")
     except subprocess.CalledProcessError as e:
         print(Fore.RED + f"Error running npm create vite: {e}")
