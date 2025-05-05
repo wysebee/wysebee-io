@@ -201,6 +201,7 @@ export default defineConfig({
 
 @app.command()
 def dev():
+    build_ui()
     process = subprocess.Popen(
         ["python", "main.py", "--dev"],
     )
