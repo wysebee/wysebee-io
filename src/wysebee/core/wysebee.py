@@ -131,3 +131,9 @@ class Wysebee(QObject):
       self.observer.stop()
       self.observer.join()
       event.accept()
+
+    def browser(self):
+      return self._browser
+
+    def wsserver(self):
+      return self._wsserver
