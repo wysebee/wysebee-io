@@ -12,7 +12,7 @@ from .wysebee_backend import WysebeeBackend
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-def setup_logging():
+def setup_logging(logfile):
     logger = logging.getLogger('wysebee')
     logger.setLevel(logging.DEBUG)
 
@@ -21,7 +21,7 @@ def setup_logging():
     c_handler.setLevel(logging.DEBUG)
 
     # File handler
-    f_handler = logging.FileHandler('wysebee.log')
+    f_handler = logging.FileHandler(logfile)
     f_handler.setLevel(logging.DEBUG)
 
     # Formatter
@@ -33,8 +33,6 @@ def setup_logging():
     if not logger.handlers:
         logger.addHandler(c_handler)
         logger.addHandler(f_handler)
-
-setup_logging()
 
 logger = logging.getLogger("wysebee")
 
@@ -53,8 +51,10 @@ class ReloadHandler(FileSystemEventHandler, QObject):
       self.reload.emit()
 
 class Wysebee(QObject):
-    def __init__(self, app):
+    def __init__(self, app, logfile = None):
       super().__init__()
+      if logfile is not None:
+          setup_logging(logfile)
       self._app = app
       self._isDev = False
       args = QCoreApplication.arguments()
