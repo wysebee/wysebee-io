@@ -92,32 +92,17 @@ export default defineConfig({
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Vite + React</title>
-        <script type="text/javascript" src="qwebchannel.js"></script>
-        <script type="text/javascript">
-        console.log("Initializing QWebSocket...");
-        let baseUrl = "ws://localhost:12345";
-
-        console.log("Connecting to WebSocket server at " + baseUrl + ".");
-        let socket = new WebSocket(baseUrl);
-
-        socket.onclose = function () {
-            console.error("web socket closed");
-        };
-        socket.onerror = function (error) {
-            console.error("web socket error: " + error);
-        };
-        socket.onopen = function () {
-            console.log("WebSocket connected, setting up QWebChannel.");
-            new QWebChannel(socket, function (channel) {
-            console.log("✅ QWebChannel initialized");
-            channel.objects.wysebee.sendMessage("Hello from the frontend!");
-            window.wysebee = channel.objects.wysebee;
-            });
-        };
-        </script>
+        <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
     </head>
     <body>
         <div id="root"></div>
+        <script>
+        new QWebChannel(qt.webChannelTransport, function(channel) {
+            console.log("✅ QWebChannel initialized");
+            channel.objects.wysebee.sendMessage("Hello from the frontend!");
+            window.wysebee = channel.objects.wysebee;
+        });
+        </script>
         <script type="module" src="/src/main.jsx"></script>
     </body>
     </html>
@@ -133,32 +118,17 @@ export default defineConfig({
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Vite + React</title>
-        <script type="text/javascript" src="qwebchannel.js"></script>
-        <script type="text/javascript">
-        console.log("Initializing QWebSocket...");
-        let baseUrl = "ws://localhost:12345";
-
-        console.log("Connecting to WebSocket server at " + baseUrl + ".");
-        let socket = new WebSocket(baseUrl);
-
-        socket.onclose = function () {
-            console.error("web socket closed");
-        };
-        socket.onerror = function (error) {
-            console.error("web socket error: " + error);
-        };
-        socket.onopen = function () {
-            console.log("WebSocket connected, setting up QWebChannel.");
-            new QWebChannel(socket, function (channel) {
-            console.log("✅ QWebChannel initialized");
-            channel.objects.wysebee.sendMessage("Hello from the frontend!");
-            window.wysebee = channel.objects.wysebee;
-            });
-        };
-        </script>
+        <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
     </head>
     <body>
         <div id="root"></div>
+        <script>
+        new QWebChannel(qt.webChannelTransport, function(channel) {
+            console.log("✅ QWebChannel initialized");
+            channel.objects.wysebee.sendMessage("Hello from the frontend!");
+            window.wysebee = channel.objects.wysebee;
+        });
+        </script>
         <script type="module" src="/src/main.tsx"></script>
     </body>
     </html>
@@ -174,32 +144,17 @@ export default defineConfig({
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Vite + React</title>
-        <script type="text/javascript" src="qwebchannel.js"></script>
-        <script type="text/javascript">
-        console.log("Initializing QWebSocket...");
-        let baseUrl = "ws://localhost:12345";
-
-        console.log("Connecting to WebSocket server at " + baseUrl + ".");
-        let socket = new WebSocket(baseUrl);
-
-        socket.onclose = function () {
-            console.error("web socket closed");
-        };
-        socket.onerror = function (error) {
-            console.error("web socket error: " + error);
-        };
-        socket.onopen = function () {
-            console.log("WebSocket connected, setting up QWebChannel.");
-            new QWebChannel(socket, function (channel) {
-            console.log("✅ QWebChannel initialized");
-            channel.objects.wysebee.sendMessage("Hello from the frontend!");
-            window.wysebee = channel.objects.wysebee;
-            });
-        };
-        </script>
+        <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
     </head>
     <body>
         <div id="root"></div>
+        <script>
+        new QWebChannel(qt.webChannelTransport, function(channel) {
+            console.log("✅ QWebChannel initialized");
+            channel.objects.wysebee.sendMessage("Hello from the frontend!");
+            window.wysebee = channel.objects.wysebee;
+        });
+        </script>
         <script type="module" src="/src/main.js"></script>
     </body>
     </html>
@@ -215,42 +170,22 @@ export default defineConfig({
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Vite + React</title>
-        <script type="text/javascript" src="qwebchannel.js"></script>
-        <script type="text/javascript">
-        console.log("Initializing QWebSocket...");
-        let baseUrl = "ws://localhost:12345";
-
-        console.log("Connecting to WebSocket server at " + baseUrl + ".");
-        let socket = new WebSocket(baseUrl);
-
-        socket.onclose = function () {
-            console.error("web socket closed");
-        };
-        socket.onerror = function (error) {
-            console.error("web socket error: " + error);
-        };
-        socket.onopen = function () {
-            console.log("WebSocket connected, setting up QWebChannel.");
-            new QWebChannel(socket, function (channel) {
-            console.log("✅ QWebChannel initialized");
-            channel.objects.wysebee.sendMessage("Hello from the frontend!");
-            window.wysebee = channel.objects.wysebee;
-            });
-        };
-        </script>
+        <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
     </head>
     <body>
         <div id="root"></div>
+        <script>
+        new QWebChannel(qt.webChannelTransport, function(channel) {
+            console.log("✅ QWebChannel initialized");
+            channel.objects.wysebee.sendMessage("Hello from the frontend!");
+            window.wysebee = channel.objects.wysebee;
+        });
+        </script>
         <script type="module" src="/src/main.ts"></script>
     </body>
     </html>
     """
             )
-
-        assets_dir = os.path.join(os.path.dirname(__file__), "../assets")
-        shutil.copyfile(
-            os.path.join(assets_dir, "qwebchannel.js"), "./public/qwebchannel.js"
-        )
 
         subprocess.run(["npm", "install"], check=True)
         subprocess.run(["npm", "run", "build"], check=True)

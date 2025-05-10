@@ -9,7 +9,6 @@ from .resource_loader import ResourceLoader
 from .wysebee_webview import WysebeeWebView
 from .wysebee_webengine_page import WysebeeWebEnginePage
 from .wysebee_backend import WysebeeBackend
-from .websocket_client_wrapper import WebSocketClientWrapper
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -62,13 +61,6 @@ class Wysebee(QObject):
       if len(args) > 1 and "--dev" in args:
           logger.debug("Running in development mode.")
           self._isDev = True
-      self._wsserver = QWebSocketServer(
-          "QWebChannel Standalone Example Server",
-          QWebSocketServer.SslMode.NonSecureMode,
-      )
-      if not self._wsserver.listen(QHostAddress.SpecialAddress.LocalHost, 12345):
-          logger.error("Failed to open web socket server.")
-          raise RuntimeError("Failed to open web socket server.")
       self._resource_loader = ResourceLoader()
       self._resource_loader.init_handler()
       self._browser = WysebeeWebView()
@@ -83,11 +75,7 @@ class Wysebee(QObject):
         self._browser.dropFile.connect(backend.onDropFile)
         self._channel.registerObject("wysebee", backend)
 
-        client_wrapper = WebSocketClientWrapper(self._wsserver)
-        client_wrapper.client_connected.connect(self._channel.connectTo)
-
         self._browser.page().setWebChannel(self._channel)
-        self._client_wrapper = client_wrapper
         if width is not None and height is not None:
           self._browser.resize(width, height)
         return self._browser
@@ -134,6 +122,3 @@ class Wysebee(QObject):
 
     def browser(self):
       return self._browser
-
-    def wsserver(self):
-      return self._wsserver
