@@ -1,4 +1,0 @@
-opencv-python
-
-PySide6
-Wysebee
