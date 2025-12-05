@@ -76,6 +76,11 @@ class Wysebee(QObject):
         self._channel.registerObject("wysebee", backend)
 
         self._browser.page().setWebChannel(self._channel)
+
+        # Allow local content to access remote URLs
+        settings = self._browser.page().settings()
+        settings.setAttribute(settings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
+
         if width is not None and height is not None:
           self._browser.resize(width, height)
         return self._browser
